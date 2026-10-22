@@ -1,0 +1,305 @@
+/* ==========================================
+   LOGIN PAGE
+   ========================================== */
+
+/* Main Container */
+.container-login {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    background-color: #ffffff;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Sisi Kiri */
+.left-section {
+    flex: 1;
+    padding: 50px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: radial-gradient(circle at bottom left, rgba(243, 156, 18, 0.15), transparent 50%);
+}
+
+.logo-container {
+    margin-bottom: 20px;
+}
+
+.logo {
+    height: 70px;
+    object-fit: contain;
+}
+
+.left-section h1 {
+    font-size: 26px;
+    color: #e67e22;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #263C6D;
+    line-height: 1.6;
+    max-width: 480px;
+    margin-bottom: 30px;
+}
+
+/* Ilustrasi Jaringan */
+.illustration-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: 180px;
+    margin: 10px 0 30px 0;
+}
+
+.center-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background-color: #f1c40f;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 20px;
+    box-shadow: 0 4px 10px rgba(241, 196, 15, 0.4);
+    z-index: 2;
+}
+
+.network-node {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 11px;
+    color: #333;
+}
+
+.network-node .avatar {
+    width: 35px;
+    height: 35px;
+    background-color: #2c3e50;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.network-node.member-2 .avatar {
+    background-color: #e67e22;
+}
+
+.network-node.member-3 .avatar,
+.network-node.advisor .avatar {
+    background-color: #f1c40f;
+    color: #2c3e50;
+}
+
+/* Posisi Node */
+.member-1 { top: 10px; left: 40px; }
+.member-2 { bottom: 10px; left: 80px; }
+.member-3 { top: 10px; right: 80px; }
+.advisor { bottom: 10px; right: 40px; }
+
+/* Fitur List */
+.features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.feature-icon {
+    width: 38px;
+    height: 38px;
+    background-color: #fafafa;
+    color: #f39c12;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+}
+
+.feature-item span {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Sisi Kanan (Card Login) */
+.right-section {
+    flex: 1;
+    background-color: #2F497C;
+    background-image: radial-gradient(circle at top right, rgba(230, 126, 34, 0.4), transparent 60%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+}
+
+.login-card {
+    background: rgba(253, 253, 253, 0.137);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 45px 40px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.login-card h2 {
+    color: #ffffff;
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.login-card p {
+    color: #ffffff;
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+
+.login-subtitle {
+    color: #b0c4de;
+    font-size: 13px;
+    margin-bottom: 30px;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-top: 8px;
+}
+
+.forgot-password a {
+    color: #b0c4de;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background-color: #e67e22;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-login:hover {
+    background-color: #d35400;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: #ffffff;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+
+.input-wrapper > i {
+    position: absolute;
+    left: 0;
+    width: 43px;
+    height: 43px;
+    background-color: rgba(255, 255, 255, 0.863);
+    color: #455B8A;
+    font-size: 14px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 9px 15px 9px 50px;
+    background-color: rgba(255, 255, 255, 0.365);
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 500; 
+    outline: none;
+}
+
+.input-wrapper input::placeholder {
+    color: rgba(255, 254, 254, 0.521);
+}
+
+.input-wrapper #togglePassword {
+    position: absolute;
+    right: 15px; 
+    background: transparent; 
+    border: none; 
+    cursor: pointer; 
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+}
+
+.input-wrapper #togglePassword i {
+    position: static; 
+    width: auto;
+    height: auto;
+    background: transparent;
+    color: var(--navy-900); 
+    font-size: 16px;
+}
+
+.input-wrapper #togglePassword:hover i {
+    color: var(--yellow); 
+}
+
+
+
+@media (max-width: 900px) {
+    .container-login {
+        flex-direction: column;
+        overflow-y: auto;
+    }
+    .right-section {
+        border-radius: 0;
+        padding: 40px 20px;
+    }
+}
