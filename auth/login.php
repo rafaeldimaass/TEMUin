@@ -8,7 +8,7 @@ if (isset($_SESSION['user_id'])) {
 }
 
 if (!isset($base)) {
-    $__jobsheetRoot = dirname(__DIR__); 
+    $__jobsheetRoot = dirname(__DIR__);
     $__scriptDir = dirname($_SERVER['SCRIPT_FILENAME']);
     $__rel = ltrim(str_replace('\\', '/', substr($__scriptDir, strlen($__jobsheetRoot))), '/');
     $base = $__rel === '' ? '' : str_repeat('../', substr_count($__rel, '/') + 1);
@@ -34,7 +34,7 @@ $page_title = "Login - TEMUin";
     <link rel="stylesheet" href="../assets/css/pages/login.css">
     <!-- FontAwesome untuk ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-     <!-- Import Font Poppins -->
+    <!-- Import Font Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -115,11 +115,15 @@ $page_title = "Login - TEMUin";
                                 <i class="fa-solid fa-lock"></i>
                                 <input type="password" id="password" name="password" placeholder="Masukkan password" required>
                                 <button type="button" id="togglePassword">
-                                <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                                    <i class="fa-solid fa-eye" id="eyeIcon"></i>
                                 </button>
                             </div>
+
                             <div class="forgot-password">
                                 <a href="#">Forgot password?</a>
+                            </div>
+                            <div class="regist-link">
+                                <small>Belum punya akun? <a href="register.php" style="color: white; cursor: pointer;"><u>Klik di sini</u></a> untuk register.</small>
                             </div>
                         </div>
                         <button type="submit" class="btn-login">Login</button>
