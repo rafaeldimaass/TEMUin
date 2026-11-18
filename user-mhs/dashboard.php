@@ -14,14 +14,42 @@ require_once '../includes/header.php';
 
 
 $namaMahasiswa = $_SESSION['nama'] ?? 'Mahasiswa';
+$user_id = $_SESSION['user_id'];
 
-// 3. Ambil Data Tim dari Database PostgreSQL
+// 3. Ambil data profil mahasiswa untuk rekomendasi dan foto profil
 try {
-  $stmtTim = $pdo->query("SELECT * FROM tim ORDER BY id DESC LIMIT 4");
+  $stmtProfil = $pdo->prepare("SELECT skill, foto_profil FROM profil_mahasiswa WHERE user_id = ?");
+  $stmtProfil->execute([$user_id]);
+  $profil = $stmtProfil->fetch(PDO::FETCH_ASSOC);
+  $user_skills = $profil['skill'] ?? '';
+  $user_foto_profil = $profil['foto_profil'] ?? '';
+} catch (PDOException $e) {
+  $user_skills = '';
+  $user_foto_profil = '';
+}
+
+// 4. Ambil Data Tim yang Buka (Status 'open') beserta Nama Ketua dan Foto Profil Ketua
+try {
+  $stmtTim = $pdo->query("SELECT t.*, u.nama AS nama_ketua, pm.foto_profil AS foto_profil
+    FROM tim_lomba t
+    LEFT JOIN users u ON t.ketua_id = u.id
+    LEFT JOIN profil_mahasiswa pm ON pm.user_id = u.id
+    WHERE t.status_tim = 'open'
+    ORDER BY t.tanggal_penutupan ASC
+    LIMIT 4");
   $listTeams = $stmtTim->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-  $listTeams = []; // Fallback jika tabel belum ada
+  $listTeams = [];
 }
+
+// 5. Ambil Data Info Lomba dari Database
+try {
+  $stmtLomba = $pdo->query("SELECT * FROM info_lomba ORDER BY tanggal_penutupan ASC LIMIT 3");
+  $listLomba = $stmtLomba->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+  $listLomba = [];
+}
+
 ?>
 <link rel="stylesheet" href="../assets/css/global.css">
 <link rel="stylesheet" href="../assets/css/components.css">
@@ -58,7 +86,7 @@ try {
         </svg>
       </div>
       <div>
-        <b>4</b>
+        <b><?= count($listTeams) ?></b>
         <span>tim mencari anggota</span>
       </div>
     </div>
@@ -77,7 +105,7 @@ try {
         </svg>
       </div>
       <div>
-        <b>3</b>
+        <b><?= count($listLomba) ?></b>
         <span>lomba sedang dibuka</span>
       </div>
     </div>
@@ -92,24 +120,55 @@ try {
   </div>
 
   <div class="grid">
-    <!-- Card -->
-    <article class="card">
-      <div class="poster" style="--a:#1f2d6b; --b:#44639a;">
-        <span class="status">Menerima anggota</span>
-        <span>JF</span>
-      </div>
-      <div class="body">
-        <h3>JTI FEST</h3>
-        <p class="desc">Tim Garuda Digital, ketua Syahrur R.</p>
-        <div class="tags">
-          <span class="tag role">UI/UX Designer</span>
-        </div>
-        <div class="card-actions">
-          <a class="btn btn-ghost" href="#">Detail</a>
-          <a class="btn btn-orange" href="#">Gabung</a>
-        </div>
-      </div>
-    </article>
+    <?php if (count($listTeams) > 0): ?>
+      <?php foreach ($listTeams as $team):
+        $skills_req = explode(',', $team['skills_dibutuhkan'] ?? '');
+      ?>
+        <!-- Card -->
+        <article class="card">
+          <div class="poster" style="--a:#1f2d6b; --b:#44639a;">
+            <span class="status">Menerima anggota</span>
+            <?php if (!empty($team['gambar'])): ?>
+              <img src="../<?= htmlspecialchars($team['gambar']) ?>" alt="Poster" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
+            <?php else: ?>
+              <span><?= strtoupper(substr($team['nama_lomba'], 0, 2)) ?></span>
+            <?php endif; ?>
+          </div>
+
+          <div class="body">
+            <h3><?= htmlspecialchars($team['nama_lomba']) ?></h3>
+            <div class="team-meta-info" style="display: flex; align-items: center; gap: 6px; margin: 4px 0 8px; font-size: 15px; font-weight: 700;">
+            <span style="font-size: 17px;">👥</span>
+            <span>Nama Tim: <b><?= htmlspecialchars($team['nama_tim']) ?></b></span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted);">
+              <?php if (!empty($team['foto_profil'])): ?>
+                <img src="../assets/uploads/profile/<?= htmlspecialchars($team['foto_profil']) ?>" alt="Foto Profil" style="width: 22px; height: 22px; border-radius: 50%; object-fit: cover;">
+              <?php else: ?>
+                <!-- Fallback inisial nama jika ketua belum upload foto profil -->
+                <div style="width: 22px; height: 22px; border-radius: 50%; background: var(--yellow); color: var(--navy-900); display: grid; place-items: center; font-size: 10px; font-weight: 700;">
+                  <?= strtoupper(substr($team['nama_ketua'], 0, 2)) ?>
+                </div>
+              <?php endif; ?>
+              <span>Ketua: <b><?= htmlspecialchars($team['nama_ketua']) ?></b></span>
+            </div>
+            <div class="tags">
+              <?php foreach ($skills_req as $s): ?>
+                <?php if (trim($s) !== ''): ?>
+                  <span class="tag tag-role"><?= htmlspecialchars(trim($s)) ?></span>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            </div>
+            <div class="card-actions">
+              <a class="btn btn-ghost" href="../tim/apply-tim.php?id=<?= $team['id'] ?>" style="width: 100%;">Detail</a>
+              <a class="btn btn-orange" href="../tim/apply-tim.php?id=<?= $team['id'] ?>" style="width: 100%;">Gabung</a>
+            </div>
+          </div>
+        </article>
+      <?php endforeach; ?>
+    <?php else: ?>
+      <p>Belum ada tim yang membuka rekrutmen saat ini.</p>
+    <?php endif; ?>
   </div>
 </section>
 
@@ -121,92 +180,57 @@ try {
   </div>
 
   <div class="grid">
-
-    <!-- Card 1 -->
-    <article class="card">
-      <div class="poster" style="--a:#1e40af; --b:#3b82f6;">
-        <span>PI</span>
-      </div>
-      <div class="body">
-        <div class="tags">
-          <span class="tag cat">Hackathon</span>
-          <span class="tag cat">Business Plan</span>
-        </div>
-        <h3>PLAY IT! PLUS+</h3>
-        <p class="desc">Saatnya wujudkan inovasi masa depan lewat PLAY IT! PLUS Hackathon Deeptech! Kompetisi ini menantang tim terbaik untuk menciptaka...</p>
-        <div class="meta">
-          <div>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-              <line x1="16" y1="2" x2="16" y2="6" />
-              <line x1="8" y1="2" x2="8" y2="6" />
-              <line x1="3" y1="10" x2="21" y2="10" />
-            </svg>
-            <span>Pendaftaran sampai <b>29 Okt</b> (10 hari lagi)</span>
+    <?php if (count($listLomba) > 0): ?>
+      <?php foreach ($listLomba as $lomba):
+        $today = new DateTime();
+        $deadline = new DateTime($lomba['tanggal_penutupan']);
+        $sisa_hari = $today->diff($deadline)->format('%r%a');
+        $kategori_arr = !empty($lomba['kategori']) ? explode(',', $lomba['kategori']) : [];
+      ?>
+        <article class="card">
+          <div class="poster" style="--a:#1e40af; --b:#3b82f6;">
+            <?php if (!empty($lomba['poster'])): ?>
+              <img src="../assets/uploads/poster/<?= htmlspecialchars($lomba['poster']) ?>" alt="Poster" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
+            <?php else: ?>
+              <span><?= strtoupper(substr($lomba['judul'], 0, 2)) ?></span>
+            <?php endif; ?>
           </div>
-        </div>
-        <div class="card-actions">
-          <a class="btn btn-ghost" href="#">Detail Lomba</a>
-        </div>
-      </div>
-    </article>
 
-    <!-- Card 2 -->
-    <article class="card">
-      <div class="poster" style="--a:#1e3a8a; --b:#4b5563;">
-        <span>JF</span>
-      </div>
-      <div class="body">
-        <div class="tags">
-          <span class="tag cat">Hackathon</span>
-        </div>
-        <h3>JTI FEST</h3>
-        <p class="desc">Kompetisi inovasi solusi digital dengan seleksi proposal, bootcamp, dan final di Malang.</p>
-        <div class="meta">
-          <div>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-              <line x1="16" y1="2" x2="16" y2="6" />
-              <line x1="8" y1="2" x2="8" y2="6" />
-              <line x1="3" y1="10" x2="21" y2="10" />
-            </svg>
-            <span>Pendaftaran sampai <b>29 Okt</b> (10 hari lagi)</span>
+          <div class="body">
+            <div class="tags">
+              <?php foreach ($kategori_arr as $kat): ?>
+                <?php if (trim($kat) !== ''): ?>
+                  <span class="tag cat"><?= htmlspecialchars(trim($kat)) ?></span>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            </div>
+
+            <h3><?= htmlspecialchars($lomba['judul']) ?></h3>
+            <p class="desc"><?= htmlspecialchars($lomba['deskripsi']) ?></p>
+
+            <div class="meta">
+              <div>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                <span>Pendaftaran sampai <b><?= date('d M Y', strtotime($lomba['tanggal_penutupan'])) ?></b>
+                  <?= ($sisa_hari > 0) ? "($sisa_hari hari lagi)" : "(Ditutup hari ini)" ?>
+                </span>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <a class="btn btn-ghost" href="<?= !empty($lomba['link_detail']) ? htmlspecialchars($lomba['link_detail']) : '#' ?>" target="_blank">Detail Lomba</a>
+            </div>
           </div>
-        </div>
-        <div class="card-actions">
-          <a class="btn btn-ghost" href="#">Detail Lomba</a>
-        </div>
-      </div>
-    </article>
-
-    <!-- Card 3 -->
-    <article class="card">
-      <div class="poster" style="--a:#7c2d12; --b:#f6ad55;">
-        <span>LK</span>
-      </div>
-      <div class="body">
-        <div class="tags">
-          <span class="tag cat">Karya Tulis</span>
-        </div>
-        <h3>Lomba Karya Tulis Ilmiah Nasional</h3>
-        <p class="desc">Tulis gagasan ilmiahmu tentang isu pembangunan berkelanjutan dan bersaing di tingkat nasional.</p>
-        <div class="meta">
-          <div>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-              <line x1="16" y1="2" x2="16" y2="6" />
-              <line x1="8" y1="2" x2="8" y2="6" />
-              <line x1="3" y1="10" x2="21" y2="10" />
-            </svg>
-            <span>Pendaftaran sampai <b>7 Nov</b> (19 hari lagi)</span>
-          </div>
-        </div>
-        <div class="card-actions">
-          <a class="btn btn-ghost" href="#">Detail Lomba</a>
-        </div>
-      </div>
-    </article>
-
+        </article>
+      <?php endforeach; ?>
+    <?php else: ?>
+      <p>Belum ada info lomba yang tersedia.</p>
+    <?php endif; ?>
   </div>
 </section>
 

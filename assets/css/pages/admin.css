@@ -1,0 +1,201 @@
+body {
+    margin: 0 !important;
+    padding: 0;
+    display: flex !important;
+    flex-direction: row !important;
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--navy-900);
+    -webkit-font-smoothing: antialiased;
+    flex-direction: row !important; /* Ubah dari column menjadi row */
+    height: 100vh; 
+    overflow: hidden;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+}
+/* Kontainer Utama Sidebar */
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background-color: var(--navy-900);
+    color: white;
+    display: flex;
+    flex-direction: column; /* Menyusun elemen logo, menu, dan logout secara vertikal */
+    padding: 30px 0;
+    flex-shrink: 0;
+    overflow-y: auto;
+}
+
+/* Area Logo */
+.logo {
+    padding: 0 25px 30px 25px;
+    display: flex;
+    align-items: center;
+}
+.logo img {
+    max-width: 100%;
+    height: auto;
+    max-height: 76px;
+    object-fit: contain;
+}
+
+/* Daftar Menu Navigasi */
+.nav-menu {
+    list-style: none;
+    flex: 1; /* Mengisi sisa ruang kosong di antara logo dan tombol keluar */
+}
+.nav-menu li, .logout {
+    padding: 15px 25px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Jarak antara ikon FontAwesome dan teks */
+}
+
+/* Efek Menu Aktif */
+.nav-menu li.active {
+    background-color: #F47B20;
+    padding: 15px 25px;
+    margin: 0 auto;
+    font-weight: 600;
+    color: var(--navy-900);
+    border-radius: 10px 10px 10px 10px; 
+    width: 95%;
+    transition: all 0.2s ease;
+}
+
+/* Efek Hover untuk Menu Tidak Aktif */
+.nav-menu li:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Tombol Keluar */
+.logout {
+    margin-top: auto; 
+}
+
+.main-content {
+    flex: 1; /* Memastikan konten utama mengambil sisa lebar layar */
+    display: flex;
+    flex-direction: column; /* Mengembalikan urutan konten menjadi dari atas ke bawah */
+    overflow-y: auto;
+    padding: 32px 40px;
+    height: 100vh; 
+}
+
+.main-content footer {
+    margin-top: auto; /* Mendorong footer ke posisi paling bawah layar */
+    margin-left: -40px; /* Menarik footer menembus padding kiri */
+    margin-right: -40px; /* Menarik footer menembus padding kanan */
+    margin-bottom: -32px; /* Menarik footer menembus padding bawah */
+    width: auto; 
+}
+
+.table-card{
+    width: 100%;
+    padding: 0;
+    border-collapse: collapse;
+    text-align: left;
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+
+.table-card thead {
+    width: 100%;
+    color: var(--muted);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: var(--bg);
+}
+
+.table-card th, .table-card td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--line);
+}
+
+.table-card tr {
+    transition: background 0.2s;
+}
+
+.table-card tr:hover {
+    background: #f9fafb;
+}
+.table-dosen {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-block;
+}
+.badge-nasional { background: #e0f2fe; color: #0284c7; }
+.badge-lokal { background: var(--yellow-soft); color: var(--orange-ink); }
+.badge-buka { background: var(--green-bg); color: var(--green-ink); }
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+.btn-action {
+    padding: 6px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.btn-edit { 
+    background: var(--navy-900); 
+    color: white; 
+}
+.btn-edit:hover { 
+    background: var(--navy-700); 
+}
+.btn-delete { background: #fee2e2; 
+    color: #ef4444; 
+}
+.btn-delete:hover { 
+    background: #fca5a5; 
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    color: var(--muted);
+    font-size: 14px;
+
+}
+.pagination-nav { 
+    display: flex; 
+    gap: 5px;
+    margin-top: 10px;
+}
+.page-btn {
+    padding: 6px 12px;
+    border: 1px solid var(--line);
+    background: white;
+    color: var(--navy-900);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--font);
+}
+.page-btn:hover { background: var(--bg); }
+.page-btn.active {
+    background: var(--navy-900);
+    color: white;
+    border-color: var(--navy-900);
+}

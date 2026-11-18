@@ -12,7 +12,7 @@ if ($isLoggedIn) {
     if ($userRole === 'mahasiswa') {
         $dashboardUrl = 'user-mhs/index.php';
     } elseif ($userRole === 'dosen') {
-        $dashboardUrl = 'user-dosen/index.php';
+        $dashboardUrl = 'user-dosen/dashboard.php';
     } elseif ($userRole === 'admin') {
         $dashboardUrl = 'admin/index.php';
     }

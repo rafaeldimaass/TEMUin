@@ -16,4 +16,4 @@ VALUES ('Dr. Budi Dosen, M.Kom.', 'dosen@polinema.ac.id', '$2y$10$ContohHashPass
 
 -- 3. Insert data untuk role Admin
 INSERT INTO users (nama, email, password, role) 
-VALUES ('Administrator TEMUin', 'admin@polinema.ac.id', '$2y$10$ContohHashPasswordAdminAman123', 'admin');
+VALUES ('Administrator TEMUin', 'admin@polinema.ac.id', '$2y$10$ContohHash@minttt', 'admin');

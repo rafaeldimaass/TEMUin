@@ -16,6 +16,8 @@
 .btn-orange:hover { background: #ff953f; }
 .btn-ghost  { background: #fff; color: var(--navy-900); border: 1.5px solid #cfd8ea; }
 .btn-ghost:hover { background: var(--bg); }
+.btn-danger { background: #ef4444; color: #fff; }
+.btn-danger:hover { background: #dc2626; }
 
 /* --- CARDS & POSTER --- */
 .card {
@@ -29,24 +31,70 @@
   background: linear-gradient(135deg, var(--a, #1f2d6b), var(--b, #44639a));
   color: rgba(255,255,255,.92); font-size: 44px; font-weight: 800;
 }
-.poster img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.poster img { 
+  position: absolute; 
+  inset: 0; 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  object-position: top center; 
+}
+
 .status {
   position: absolute; top: 12px; left: 12px; z-index: 1;
   display: inline-flex; align-items: center; gap: 7px;
   padding: 5px 12px; border-radius: 999px;
   background: var(--green-bg); color: var(--green-ink);
+  border: 1.5px solid #0a830a;
   font-size: 13px; font-weight: 600;
 }
-.status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #1fa65a; }
-.status.warn { background: var(--yellow-soft); color: var(--orange-ink); }
-.status.warn::before { background: var(--orange); }
+.status::before { 
+  content: ""; 
+  width: 8px; 
+  height: 8px; 
+  border-radius: 50%; 
+  background: #1fa65a; 
+}
+.status.warn { 
+  background: var(--yellow-soft); 
+  color: var(--orange-ink); 
+}
+.status.warn::before { 
+  background: var(--orange); 
+}
+
+.body { display: flex; flex-direction: column; flex: 1; gap: 12px; padding: 18px 20px 20px; }
+.body h3 { margin: 0; font-size: 19px; font-weight: 700; line-height: 1.3; }
+.sub { margin: -6px 0 0; display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
+.sub svg { width: 16px; height: 16px; flex: none; color: var(--orange); }
+.desc {
+  margin: 0; font-size: 14px; line-height: 1.6; color: var(--muted);
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
 
 /* --- TAGS & CHIPS --- */
-.tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
-.tag { padding: 4px 12px; border-radius: 999px; font-size: 13px; font-weight: 500; }
-.tag.cat  { background: var(--yellow-soft); color: var(--navy-900); }
-.tag.role { background: #fff; color: var(--navy-900); border: 1.5px solid #cfd8ea; }
-
+.tags { 
+  display: flex; 
+  flex-wrap: wrap; 
+  align-items: 
+  center; 
+  gap: 6px; 
+}
+.tag { 
+  padding: 4px 12px; 
+  border-radius: 999px; 
+  font-size: 13px; 
+  font-weight: 500; 
+}
+.tag.cat  { 
+  background: var(--yellow-soft); 
+  color: var(--navy-900); 
+}
+.tag-role { 
+    background-color: #fff2e8; 
+    color: var(--orange-ink);  
+    border: 1.5px solid #fcd3b6; 
+} 
 /* ==========================================
    HEADER
    ========================================== */
@@ -161,8 +209,13 @@
   display: grid; place-items: center;
 }
 
+/*
+ * DUPLIKAT: .card, .poster, .poster img, .status, dan .status.warn sudah
+ * didefinisikan di bagian atas. Aturan berikutnya menimpa atau melengkapi
+ * sebagian properti; nilai deklarasi terakhir yang berlaku.
+ */
 /* ======================= CARDS & POSTER ======================= */
-.card {
+/* .card {
   display: flex; flex-direction: column; overflow: hidden;
   background: var(--card); border: 1px solid var(--line); border-radius: 20px;
   box-shadow: 0 1px 2px rgba(31,45,107,.05), 0 6px 18px rgba(31,45,107,.06);
@@ -183,22 +236,14 @@
 }
 .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #1fa65a; }
 .status.warn { background: var(--yellow-soft); color: var(--orange-ink); }
-.status.warn::before { background: var(--orange); }
+.status.warn::before { background: var(--orange); } */
 
-.body { display: flex; flex-direction: column; flex: 1; gap: 12px; padding: 18px 20px 20px; }
-.body h3 { margin: 0; font-size: 19px; font-weight: 700; line-height: 1.3; }
-.sub { margin: -6px 0 0; display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
-.sub svg { width: 16px; height: 16px; flex: none; color: var(--orange); }
-.desc {
-  margin: 0; font-size: 14px; line-height: 1.6; color: var(--muted);
-  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-}
-
+/* DUPLIKAT: .tags, .tag, dan .tag.cat sudah didefinisikan pada bagian TAGS & CHIPS.
 .tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .tags .lbl { margin-right: 2px; font-size: 13px; font-weight: 500; color: var(--muted); }
 .tag { padding: 4px 12px; border-radius: 999px; font-size: 13px; font-weight: 500; }
 .tag.cat  { background: var(--yellow-soft); color: var(--navy-900); }
-.tag.role { background: #fff; color: var(--navy-900); border: 1.5px solid #cfd8ea; }
+.tag-role { background: #fff; color: var(--navy-900); border: 1.5px solid #cfd8ea; } */
 
 .members { display: flex; align-items: center; gap: 10px; }
 .stack { display: flex; }
@@ -290,10 +335,9 @@
   color: var(--orange-ink);
 }
 
-.tag.role { 
-    background-color: #fff2e8; /* Oranye sangat muda */
-    color: var(--orange-ink);  
-    border: 1.5px solid #fcd3b6; /* Garis tepi oranye pastel */
+.logout-icon{
+  font-size: 1.2rem;
+            line-height: 1;
 }
 
 /* ================= FORM & SEARCH DASHBOARD ================= */
@@ -329,7 +373,7 @@
 }
 
 /* ================= BUTTONS ================= */
-.btn {
+/* .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -341,15 +385,16 @@
     cursor: pointer;
     transition: all 0.2s ease;
     border: none;
-}
+} */
 
 .btn-block {
     width: 100%;
 }
 
-.card-actions .btn {
+/* Aturan .card-actions .btn di atas juga menetapkan height; ini menambahkan flex. */
+/* .card-actions .btn {
     height: 44px; 
-}
+} */
 
 /* ================= LAYOUT & TYPOGRAPHY ================= */
 .block {
@@ -381,33 +426,37 @@
     gap: 24px;
 }
 
+/* DUPLIKAT: .card sudah didefinisikan dua kali di bagian CARDS & POSTER.
+  Deklarasi ini menimpa beberapa nilai, termasuk warna, radius, dan shadow. */
 /* ================= CARDS ================= */
-.card {
+/* .card {
     display: flex;
     flex-direction: column;
     background: #fff;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
+} */
 
-.card .body {
+/* Selector ini melengkapi .body sebelumnya dengan specificity lebih tinggi. */
+/* .card .body {
     padding: 18px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     flex: 1;
-}
+} */
 
 .card .body h3 {
     margin: 0;
 }
 
-.card .desc {
+/* Selector ini menimpa sebagian properti .desc yang didefinisikan sebelumnya. */
+/* .card .desc {
     color: var(--muted, #6b7280);
     font-size: 14px;
     margin: 0;
-}
+} */
 
 .card-actions {
     display: flex;
@@ -429,6 +478,11 @@
     margin-top: 32px;
 }
 
+.page-title-riwayat{
+  flex: 1;
+  min-width: 280px;
+}
+
 .page-head h1 {
     margin: 0 0 4px;
     font-size: 32px;
@@ -448,9 +502,18 @@
   color: var(--navy-900);
 }
 
+.page-head a.btn-navy {
+    color: #ffffff !important; 
+}
+
+.page-head a.btn-navy i {
+    color: #ffffff !important;
+}
+
 .page-head a :hover{
   text-decoration: underline;
 }
+
 
 .toolbar {
     margin-top: 24px;
