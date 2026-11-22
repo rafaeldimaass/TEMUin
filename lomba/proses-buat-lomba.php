@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             $_SESSION['success'] = "Info lomba berhasil ditambahkan!";
-            header('Location: info-lomba.php?status=sukses_tambah');
+            header('Location: kelola-lomba.php?status=sukses_posting_lomba');
             exit;
         } catch (PDOException $e) {
             $_SESSION['error'] = "Gagal menyimpan data: " . $e->getMessage();

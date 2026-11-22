@@ -15,11 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ambil dan sanitasi input dari form
     $nama_lomba        = trim($_POST['nama-lomba'] ?? '');
     $kategori          = trim($_POST['kategori'] ?? '');
-    $deskripsi     = trim($_POST['deskripsi-tim'] ?? '');
-    $skills_dibutuhkan          = trim($_POST['skills'] ?? ''); 
+    $deskripsi         = trim($_POST['deskripsi-tim'] ?? '');
+    $skills_dibutuhkan = trim($_POST['skills_dibutuhkan'] ?? '');
     $nama_tim          = trim($_POST['nama-tim'] ?? '');
     $jumlah_anggota    = intval($_POST['jumlah-anggota'] ?? 0);
-    // $portofolio        = trim($_POST['portofolio'] ?? '');
     $tanggal_penutupan = trim($_POST['tanggal-penutupan'] ?? '');
 
     if (empty($nama_lomba) || empty($nama_tim) || empty($jumlah_anggota)  || empty($tanggal_penutupan)) {

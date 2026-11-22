@@ -147,7 +147,7 @@ try {
 
     <div class="profile-actions" style="display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px; grid-column: 1 / -1;">
         <a href="edit-profile.php" class="btn btn-navy">Edit Profil</a>
-        <a href="<?= ($_SESSION['role'] === 'dosen') ? '../user-dosen/dashboard.php' : '../user-mhs/dashboard.php'; ?>" class="btn btn-ghost">Keluar</a>
+        <a href="<?= ($_SESSION['role'] === 'dosen') ? '../dashboard.php' : '../dashboard.php'; ?>" class="btn btn-ghost">Keluar</a>
     </div>
 
 </div>

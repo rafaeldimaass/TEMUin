@@ -86,7 +86,8 @@ $tim_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 // Pecah string skills dari database menjadi array
                 $skills = explode(',', $tim['skills_dibutuhkan']);
             ?>
-        <!-- ================= CARD ================= -->
+
+            
         <article class="card">
           <div class="poster" style="--a:#1f2d6b; --b:#44639a;">
             <span class="status <?= $status_class ?>"><?= $status_teks ?></span>

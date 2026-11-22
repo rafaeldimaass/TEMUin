@@ -30,13 +30,14 @@ require_once '../includes/sidebar.php';
   <?php unset($_SESSION['error']); ?>
 <?php endif; ?>
 
-<section class="block">
-  <div class="page-head">
+<div class="page-head">
     <div>
       <h1>Tambah Info Lomba Baru</h1>
       <p>Publikasikan informasi kompetisi terbaru, menuju indonesia emas!</p>
     </div>
   </div>
+
+<section class="block">
 
   <div class="form-tim-wrapper">
     <form action="proses-buat-lomba.php" method="POST" enctype="multipart/form-data" class="tim-form">
@@ -89,7 +90,7 @@ require_once '../includes/sidebar.php';
         </div>
       </div>
       <div class="tim-form-actions">
-        <a href="info-lomba.php" class="tim-btn tim-btn-cancel">Batal</a>
+        <a href="kelola-lomba.php" class="tim-btn tim-btn-cancel">Batal</a>
         <button type="submit" class="tim-btn tim-btn-submit">Posting Info Lomba</button>
       </div>
   </div>

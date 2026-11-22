@@ -3,8 +3,8 @@ session_start();
 
 // 1. Proteksi Akses: Hanya mahasiswa yang boleh masuk
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-  header('Location: ../auth/login.php');
-  exit;
+    header('Location: ../auth/login.php');
+    exit;
 }
 require_once '../includes/koneksi.php';
 require_once '../includes/sidebar.php';
@@ -13,14 +13,13 @@ $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $jurusan_filter = isset($_GET['jurusan']) ? trim($_GET['jurusan']) : '';
 
 // 1. Inisialisasi query dasar dengan JOIN tabel
-
 $query = "SELECT pm.*, u.nama, u.email, u.no_wa
           FROM profil_mahasiswa pm
           JOIN users u ON pm.user_id = u.id 
           WHERE 1=1";
 $params = [];
 
-// 2. Logika pencarian berdasarkan nama atau nip (menggunakan ILIKE untuk PostgreSQL)
+// 2. Logika pencarian berdasarkan nama atau nim
 if (!empty($search)) {
     $query .= " AND (u.nama ILIKE ? OR pm.nim ILIKE ?)";
     $params[] = "%$search%";
@@ -53,14 +52,14 @@ try {
 <link rel="stylesheet" href="../assets/css/global.css">
 
 <div class="page-head">
-		<div>
-			<h1>Monitoring Data Mahasiswa</h1>
-			<p>Monitoring dan kelola data mahasiswa</p>
-		</div>
-        <a class="btn btn-navy" href="buat-dosen.php">
+    <div>
+        <h1>Monitoring Data Mahasiswa</h1>
+        <p>Monitoring dan kelola data mahasiswa</p>
+    </div>
+    <a class="btn btn-navy" href="buat-dosen.php">
         <i class="fas fa-plus"></i> Tambah Data Mahasiswa
     </a>
-	</div>
+</div>
 
 <section class="admin-content-section">
     <!-- Toolbar Pencarian & Filter -->
@@ -132,21 +131,21 @@ try {
                                     <?php endif; ?>
                                     <span class="applicant-name"><?= htmlspecialchars($data_mahasiswa['nama']) ?></span>
                                 </td>
-                        <td><?= htmlspecialchars($data_mahasiswa['nim']) ?></td>
-                        <td>
-                            <span><?= htmlspecialchars($data_mahasiswa['jurusan']) ?></span>
-                        </td>
-                        <td><?= htmlspecialchars($data_mahasiswa['prodi']) ?></td>
-                        <td><?= htmlspecialchars($data_mahasiswa['skill']) ?></td>
-                        <td>
-                        <?php if (!empty($data_mahasiswa['portofolio'])): ?>
+                                <td><?= htmlspecialchars($data_mahasiswa['nim']) ?></td>
+                                <td>
+                                    <span><?= htmlspecialchars($data_mahasiswa['jurusan']) ?></span>
+                                </td>
+                                <td><?= htmlspecialchars($data_mahasiswa['prodi']) ?></td>
+                                <td><?= htmlspecialchars($data_mahasiswa['skill']) ?></td>
+                                <td>
+                                    <?php if (!empty($data_mahasiswa['portofolio'])): ?>
                                         <a href="<?= htmlspecialchars($data_mahasiswa['portofolio']) ?>" target="_blank" style="color: #253C6D; text-decoration: underline;">Link Portofolio</a>
                                     <?php else: ?>
                                         -
-                                    <?php endif; ?>                        
-                        </td>
-                        <td>
-                            <div class="desc-truncate" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-width: 280px; line-height: 1.5;">
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <div class="desc-truncate" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-width: 280px; line-height: 1.5;">
                                         <small><?= htmlspecialchars($data_mahasiswa['tentang_saya']) ?></small>
                                     </div>
                                     <button type="button"
@@ -155,21 +154,21 @@ try {
                                         style="background: none; border: none; color: #2563eb; font-size: 12px; cursor: pointer; padding: 0; margin-top: 4px;">
                                         Baca selengkapnya
                                     </button>
-                        </td>
-                        <td><?= htmlspecialchars($data_mahasiswa['email']) ?></td>
-                        <td><?= htmlspecialchars($data_mahasiswa['no_wa'] ?? 'Belum Memasukkan No WA') ?></td>
+                                </td>
+                                <td><?= htmlspecialchars($data_mahasiswa['email']) ?></td>
+                                <td><?= htmlspecialchars($data_mahasiswa['no_wa'] ?? 'Belum Memasukkan No WA') ?></td>
 
-                        <td>
-                            <div class="action-buttons">
-                                <a href="edit-data-mahasiswa.php?id=<?= urlencode($data_mahasiswa['id']) ?>" class="btn-action btn-navy">
-                                    <i class="fas fa-edit"></i> Edit
-                                </a>
-                                <a href="hapus-data-mahasiswa.php?id=<?= urlencode($data_mahasiswa['id']) ?>" class="btn-action btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus data dosen ini?');">
-                                    <i class="fas fa-trash"></i> Hapus
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="edit-data-mahasiswa.php?id=<?= urlencode($data_mahasiswa['id']) ?>" class="btn-action btn-navy">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <a href="hapus-data-mahasiswa.php?id=<?= urlencode($data_mahasiswa['id']) ?>" class="btn-action btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus data dosen ini?');">
+                                            <i class="fas fa-trash"></i> Hapus
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
@@ -190,5 +189,3 @@ try {
 </div>
 
 <?php require_once '../includes/footer.php'; ?>
-
-

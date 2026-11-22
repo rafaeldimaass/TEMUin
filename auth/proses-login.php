@@ -20,10 +20,10 @@ if ($user && password_verify($password, $user['password'])) {
 
 // 4. Logika pengalihan (redirect) berdasarkan role
     if ($user['role'] === 'mahasiswa') {
-        header('Location: ../user-mhs/dashboard.php');
+        header('Location: ../dashboard.php');
         exit;
     } elseif ($user['role'] === 'dosen') {
-        header('Location: ../user-dosen/dashboard.php'); 
+        header('Location: ../dashboard.php'); 
         exit;
     } elseif ($user['role'] === 'admin') {
         header('Location: ../admin/dashboard.php'); 

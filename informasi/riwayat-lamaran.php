@@ -52,61 +52,8 @@ try {
 
 <link rel="stylesheet" href="../assets/css/components.css">
 <link rel="stylesheet" href="../assets/css/pages/tim.css">
+<link rel="stylesheet" href="../assets/css/pages/riwayat.css">
 <link rel="stylesheet" href="../assets/css/global.css">
-
-<style>
-    .riwayat-container { max: width 100px; margin: 30px auto; padding: 0 16px; }
-    .riwayat-header { margin-bottom: 24px; }
-    .riwayat-header h1 { font-size: 26px; color: #1e293b; margin-bottom: 6px; }
-    .riwayat-header p { color: #64748b; font-size: 14px; }
-
-    /* Styling Toggle / Tab Switcher */
-    .toggle-switch-container {
-        display: inline-flex;
-        background: #f1f5f9;
-        border: 1px solid #cbd5e1;
-        border-radius: 99px;
-        padding: 4px;
-        margin-bottom: 24px;
-    }
-    .toggle-btn {
-        padding: 8px 20px;
-        border-radius: 99px;
-        font-size: 14px;
-        font-weight: 600;
-        text-decoration: none;
-        color: #64748b;
-        transition: all 0.2s ease;
-    }
-    .toggle-btn.active {
-        background: #0284c7; /* Warna biru utama (bisa disesuaikan) */
-        color: #ffffff;
-        box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
-    }
-    .toggle-btn:hover:not(.active) {
-        color: #1e293b;
-    }
-
-    .table-responsive { width: 100%; overflow-x: auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,.05); border: 1px solid #e2e8f0; }
-    .riwayat-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
-    .riwayat-table th { background: #f8fafc; color: #475569; font-weight: 600; padding: 14px 16px; border-bottom: 1px solid #e2e8f0; }
-    .riwayat-table td { padding: 14px 16px; border-bottom: 1px solid #f1f5f9; color: #334155; vertical-align: middle; }
-    .riwayat-table tr:last-child td { border-bottom: none; }
-
-    .badge-status { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
-    .status-pending { background: #fef3c7; color: #d97706; }
-    .status-diterima { background: #d1fae5; color: #059669; }
-    .status-ditolak { background: #fee2e2; color: #dc2626; }
-
-    .btn-action { padding: 6px 12px; border-radius: 6px; font-size: 12px; text-decoration: none; font-weight: 500; display: inline-block; margin-right: 4px; margin-bottom: 4px; }
-    .btn-detail { background: #1e293b; color: #fff; }
-    .btn-detail:hover { background: #0f172a; color: #fff; }
-    .btn-wa { background: #25d366; color: #fff; }
-    .btn-wa:hover { background: #1eae54; color: #fff; }
-
-    .empty-state { text-align: center; padding: 48px 20px; background: #fff; border-radius: 12px; border: 1px dashed #cbd5e1; }
-    .empty-state p { color: #64748b; margin-bottom: 16px; }
-</style>
 
 <div class="page-head">
         <div class="page-title-riwayat">
@@ -158,7 +105,7 @@ try {
                                 <td><?= $tim['total_pelamar'] ?> Pelamar (<?= $tim['total_diterima'] ?> Diterima)</td>
                                 <td><?= date('d M Y', strtotime($tim['created_at'])) ?></td>
                                 <td>
-                                    <a href="detail-tim.php?id=<?= $tim['id'] ?>" class="btn-action btn-detail">Kelola Tim</a>
+                                    <a href="../tim/kelola-tim.php?= $tim['id'] ?>" class="btn-action btn-navy">Kelola Tim</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -198,7 +145,13 @@ try {
                                 } else {
                                     $wa_ketua = $wa_raw;
                                 }
-                                $link_wa = !empty($wa_ketua) ? "https://wa.me/{$wa_ketua}?text=Halo%20kak%20" . urlencode($lamaran['nama_ketua']) . ",%20saya%20melihat%20lamaran%20saya%20diterima%20di%20tim%20" . urlencode($lamaran['nama_tim']) . "." : '#';
+
+                                $pesan = "Halo kak " . $lamaran['nama_ketua'] . ",\n"
+                                . " saya melihat lamaran saya diterima di tim " . $lamaran['nama_tim'] . "\n"
+                                . " Boleh lanjut diskusi teknisnya?";
+
+                                $link_wa = !empty($wa_ketua) 
+                                ? "https://wa.me/{$wa_ketua}?text=" . urldecode($pesan) : '#';
                             ?>
                             <tr>
                                 <td>
@@ -230,7 +183,7 @@ try {
         <?php else: ?>
             <div class="empty-state">
                 <p>Anda belum pernah mengirim lamaran ke tim manapun.</p>
-                <a href="list-tim.php" class="btn-action btn-detail" style="padding: 10px 16px; display: inline-block;">Cari Tim yang Membuka Lowongan</a>
+                <a href="list-tim.php" class="btn btn-navy" style="padding: 10px 16px; display: inline-block;">Cari Tim yang Membuka Lowongan</a>
             </div>
         <?php endif; ?>
     <?php endif; ?>

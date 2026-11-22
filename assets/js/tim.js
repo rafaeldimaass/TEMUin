@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // ===== Image Upload =====
         const imageUpload = document.getElementById('tim-img-upload');
         const imagePreview = document.getElementById('img-preview');
-        const imagePath = document.getElementById('tim-image-path');
+        const imagePath = document.getElementById('tim-img-path');
 
         imageUpload.addEventListener('change', function(e) {
             const file = e.target.files[0];
@@ -35,12 +35,27 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // ===== Skills Chip =====
+        const skillsHidden = document.getElementById('skillsHidden');
         const skillsInput = document.getElementById('skillsInput');
         const chipList = document.getElementById('chipList');
         const chipContainer = document.getElementById('chip-container');
 
         let skillsArray = [];
+
+        function updateSkillsInput() {
+        if (!skillsHidden) return;
+
+        skillsHidden.value = skillsArray.join(', ');
+
+        // Validasi agar minimal ada 1 skill sebelum submit
+        if (skillsArray.length === 0) {
+            skillsHidden.setCustomValidity('Tambahkan minimal satu skill terlebih dahulu.');
+        } else {
+            skillsHidden.setCustomValidity('');
+        }
+    }
         if (skillsInput && chipList) {
+        updateSkillsInput();
         skillsInput.addEventListener('keydown', function (e) {
             // Jika user menekan tombol Enter atau Koma (,)
             if (e.key === 'Enter' || e.key === ',') {
@@ -77,10 +92,10 @@ document.addEventListener('DOMContentLoaded', function() {
             chipList.appendChild(chip);
         });
 
-        // Buat hidden input atau update value pada input tersembunyi agar bisa dikirim via POST
+        // hidden input atau update value pada input tersembunyi agar bisa dikirim POST
         updateSkillsInput();
         
-        // Tambahkan event listener untuk tombol hapus pada chip
+        // event listener untuk tombol hapus pada chip
         document.querySelectorAll('.remove-chip').forEach(button => {
             button.addEventListener('click', function () {
                 const index = this.getAttribute('data-index');
@@ -89,22 +104,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        function updateSkillsInput() {
-        if (!skillsInput) return;
-        // bisa memasukkan gabungan string (misal dipisahkan koma) ke input tersembunyi atau input utama
-        let hiddenSkillsInput = document.getElementById('hidden-skills');
-        if (!hiddenSkillsInput) {
-            hiddenSkillsInput = document.createElement('input');
-            hiddenSkillsInput.type = 'hidden';
-            hiddenSkillsInput.id = 'hidden-skills';
-            hiddenSkillsInput.name = 'skills';
-            skillsInput.parentNode.appendChild(hiddenSkillsInput);
-        }
-        hiddenSkillsInput.value = skillsArray.join(', ');
-        // Kosongkan atribut name pada input teks biasa agar tidak bentrok, 
-        // biarkan hidden input yang mengirim data gabungannya ke backend.
-        skillsInput.removeAttribute('name');
-    }
     }  
         // ===== Set minimal date to today for deadline =====
         const tanggalInput = document.getElementById('tanggal-penutupan');

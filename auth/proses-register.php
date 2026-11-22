@@ -51,7 +51,7 @@ if (!in_array($role, $allowedRoles, true)) {
 }
 
 $host = $_ENV['DB_HOST'] ?? '127.0.0.1';
-$dbName = $_ENV['DB_NAME'] ?? 'temuin';
+$dbName = $_ENV['DB_NAME'] ?? 'temuin_db';
 $dbUser = $_ENV['DB_USER'] ?? 'postgres';
 $dbPass = $_ENV['DB_PASS'] ?? 'postgres';
 $dbPort = $_ENV['DB_PORT'] ?? '5432';

@@ -7,10 +7,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'mahasiswa'){
 }
 
 require_once __DIR__ . '/../includes/koneksi.php';
-$page_title = "Detail Tim & Rekrutmen | TEMUIN";
+$page_title = "Detail Tim & Rekrutmen | TEMUin";
 require_once __DIR__ . '/../includes/header.php';
 
 $tim_id = $_GET['id'] ?? 0;
+$user_id = (int) $_SESSION['user_id'];
 
 try {
     // Ambil data tim beserta nama ketua dari tabel users
@@ -32,12 +33,15 @@ try {
     exit;
 }
 
-// Parsing judul tim dan nama lomba dari kolom `judul` (Format: "Nama Tim - Nama Lomba")
-// $judul_parts = explode(' - ', $tim['judul'], 2);
-// $nama_tim = $judul_parts[0] ?? 'Tim Lomba';
-// $nama_lomba = $judul_parts[1] ?? ($tim['kategori'] ?? 'Lomba');
 
-// Ubah string skills yang dibutuhkan (misal: "Web Dev,UI/UX") menjadi array
+$stmtProfil = $pdo->prepare("SELECT * FROM profil_mahasiswa WHERE user_id = ? LIMIT 1");
+$stmtProfil->execute([$user_id]);
+$profil = $stmtProfil->fetch(PDO::FETCH_ASSOC) ?: [];
+
+$portofolioProfil = trim((string) ($profil['link_portofolio'] ?? $profil['portofolio'] ?? ''));
+
+
+// Ubah string skills yang dibutuhkan menjadi array
 $skills_array = !empty($tim['skills_dibutuhkan']) ? explode(',', $tim['skills_dibutuhkan']) : [];
 ?>
 
@@ -92,7 +96,7 @@ $skills_array = !empty($tim['skills_dibutuhkan']) ? explode(',', $tim['skills_di
         <!-- Hidden input untuk ID Tim -->
         <input type="hidden" name="tim_id" value="<?= $tim['id'] ?>">
         <div class="tim-form-grid">
-            <!-- Pilihan Posisi / Skill -->
+
             <div class="tim-input-group">
                 <label for="posisi_dilamar">Pilih Skill yang Sesuai <span style="color: red;">*</span></label>
                 <select id="posisi_dilamar" name="posisi_dilamar" required class="tim-form-control" required style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px;">
@@ -108,19 +112,21 @@ $skills_array = !empty($tim['skills_dibutuhkan']) ? explode(',', $tim['skills_di
                 </select>
                 <small class="tim-hint" style="color: #64748b; font-size: 0.85rem; margin-top: 4px; display: block;">Pilih salah satu posisi yang dibuka oleh ketua tim di atas.</small>
             </div>
-            <!-- Validasi Portofolio dari Profil -->
+
             <div class="tim-input-group">
-                <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #334155;">Portofolio Anda</label>
-                <?php if (!empty($profil['portofolio'])): ?>
-                    <input type="text" value="<?= htmlspecialchars($profil['portofolio']) ?>" disabled style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; background-color: #f1f5f9; color: #475569;">
-                    <small class="tim-hint" style="color: #059669; font-size: 0.85rem; margin-top: 4px; display: block;">Portofolio otomatis dilampirkan dari data profil akunmu.</small>
+                <label for="portofolio_input" style="display: block; font-weight: 600; margin-bottom: 8px; color: #334155;">Portofolio Anda</label>
+                <?php if ($portofolioProfil !== ''): ?>
+                        <input type="text" id="portofolio_input" name="portofolio_profil" value="<?= htmlspecialchars($portofolioProfil) ?>" readonly disabled style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; background-color: #f1f5f9; color: #475569;">
+                    <div class="apply-hint-success">
+                    <small class="tim-hint" style="color: var(--navy--900); font-size: 0.85rem; margin-top: 4px; display: block;">Portofolio otomatis dilampirkan dari data profil akunmu.</small>
+                    <a href="../profile/profile.php"><u style="font-size: 0.85rem;">Ubah di Profil</u></a>
+                        </div>
                 <?php else: ?>
                         <input type="url" name="portofolio_manual" placeholder="https://link-portofolio-anda.com" required class="tim-form-control">
                         <small class="tim-hint-danger">Profilmu belum memiliki portofolio. Silakan masukkan tautan portofolio eksternal di sini.</small>
                 <?php endif; ?>
             </div>
 
-            <!-- Pesan / Motivasi Bergabung -->
             <div class="tim-input-group">
                 <label for="pesan_lamaran" style="display: block; font-weight: 600; margin-bottom: 8px; color: #334155;">Pesan / Alasan Bergabung (Opsional)</label>
                 <textarea id="pesan_lamaran" name="pesan_lamaran" rows="4" placeholder="Halo ketua tim, saya tertarik bergabung karena memiliki pengalaman di bidang ini..." class="tim-form-control tim-textarea"></textarea>

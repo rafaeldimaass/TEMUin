@@ -6,15 +6,17 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'mahasiswa') {
     exit;
 }
 
-require_once __DIR__ . '/../includes/koneksi.php';
+require_once '../includes/koneksi.php';
 $page_title = "Buat Tim | TEMUIN";
-require_once __DIR__ . '/../includes/header.php';
+require_once '../includes/header.php';
 
 $namaMahasiswa = $_SESSION['nama'] ?? 'Mahasiswa';
 ?>
 
 <link rel="stylesheet" href="../assets/css/pages/tim.css">
 <link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/global.css">
+
 
 <?php if (isset($_SESSION['success'])): ?>
     <div class="alert alert-success" style="padding: 14px 20px; background: #d1fae5; color: #065f46; border: 1px solid #10b981; border-radius: 8px; margin-bottom: 20px; font-weight: 500; display: flex; justify-content: space-between; align-items: center;">
@@ -51,7 +53,7 @@ $namaMahasiswa = $_SESSION['nama'] ?? 'Mahasiswa';
                 </div>
             </label>
         </div>
-        <!-- section form buat tim -->
+
         <div class="tim-container">
             <!-- form buat tim -->
 
@@ -86,7 +88,8 @@ $namaMahasiswa = $_SESSION['nama'] ?? 'Mahasiswa';
                         <label for="skills">Skills yang dibutuhkan</label>
                         <div class="chip-input-container" id="chip-container">
                             <div id="chipList"></div>
-                            <input type="text" id="skillsInput" placeholder="Pilih multiple (Web Dev, UI/UX, Mobile)" required>
+                            <input type="hidden" name="skills_dibutuhkan" id="skillsHidden" required>
+                            <input type="text" id="skillsInput" placeholder="Pilih multiple (Web Dev, UI/UX, Mobile)">
                         </div>
                         <small class="tim-hint">Masukkan skills yang dibutuhkan</small>
                     </div>
@@ -104,12 +107,6 @@ $namaMahasiswa = $_SESSION['nama'] ?? 'Mahasiswa';
                         <input type="number" id="jumlah-anggota" name="jumlah-anggota" placeholder="Contoh: 3" min="1" max="10" required>
                         <small class="tim-hint">Isi sesuai kebutuhan tim</small>
                     </div>
-
-                    <!-- <div class="tim-input-group">
-                        <label for="portofolio">Sertakan link portofolio Anda <span class="text-red-500">*</span></label>
-                        <input type="url" id="portofolio" name="portofolio" placeholder="linkk yg penting bisa diakses yak ges" required>
-                        <small class="tim-hint">Bisa berbentuk link Google Drive atau link personal web portofolio.</small>
-                    </div> -->
 
                     <div class="tim-input-group">
                         <label for="tanggal-penutupan">Tanggal Penutupan Penerimaan Anggota</label>
