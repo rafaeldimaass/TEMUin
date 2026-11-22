@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-// 1. Proteksi Akses: Hanya mahasiswa yang boleh masuk
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'mahasiswa') {
-  header('Location: ../auth/login.php');
-  exit;
+// 1. Proteksi Akses: Hanya mahasiswa dan dosen yang boleh masuk
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['mahasiswa', 'dosen'])) {
+    header('Location: ../auth/login.php');
+    exit;
 }
 
 // 2. Panggil koneksi database
@@ -12,11 +12,13 @@ require_once '../includes/koneksi.php';
 $page_title = "Dashboard Mahasiswa";
 require_once '../includes/header.php';
 
-
-$namaMahasiswa = $_SESSION['nama'] ?? 'Mahasiswa';
+$role = $_SESSION['role'];
+$namaUser = $_SESSION['nama'] ?? ucfirst($role);
 $user_id = $_SESSION['user_id'];
 
 // 3. Ambil data profil mahasiswa untuk rekomendasi dan foto profil
+$user_skills = '';
+$user_foto_profil = '';
 try {
   $stmtProfil = $pdo->prepare("SELECT skill, foto_profil FROM profil_mahasiswa WHERE user_id = ?");
   $stmtProfil->execute([$user_id]);
@@ -24,8 +26,7 @@ try {
   $user_skills = $profil['skill'] ?? '';
   $user_foto_profil = $profil['foto_profil'] ?? '';
 } catch (PDOException $e) {
-  $user_skills = '';
-  $user_foto_profil = '';
+  error_log('Gagal mengambil profil mahasiswa: ' . $e->getMessage());
 }
 
 // 4. Ambil Data Tim yang Buka (Status 'open') beserta Nama Ketua dan Foto Profil Ketua
@@ -37,9 +38,10 @@ try {
     WHERE t.status_tim = 'open'
     ORDER BY t.tanggal_penutupan ASC
     LIMIT 4");
-  $listTeams = $stmtTim->fetchAll(PDO::FETCH_ASSOC);
+  $listTim = $stmtTim->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-  $listTeams = [];
+  error_log('Gagal mengambil data tim: ' . $e->getMessage());
+  $listTim = [];
 }
 
 // 5. Ambil Data Info Lomba dari Database
@@ -47,6 +49,7 @@ try {
   $stmtLomba = $pdo->query("SELECT * FROM info_lomba ORDER BY tanggal_penutupan ASC LIMIT 3");
   $listLomba = $stmtLomba->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
+  error_log('Gagal mengambil info lomba: ' . $e->getMessage());
   $listLomba = [];
 }
 
@@ -58,7 +61,7 @@ try {
 <!-- ======================= HERO SECTION ======================= -->
 <section class="hero" aria-labelledby="judul-hero">
   <div>
-    <h1 id="judul-hero">Halo, <?= htmlspecialchars($namaMahasiswa) ?>! Lomba apa yang mau kamu ikuti?</h1>
+    <h1 id="judul-hero">Halo, <?= htmlspecialchars($namaUser) ?>! Lomba apa yang mau kamu ikuti?</h1>
     <p class="lead">Gabung ke tim yang sedang mencari anggota, atau buat timmu sendiri dan ajak dosen pembimbing.</p>
 
     <form class="search-form" role="search" id="searchForm">
@@ -86,7 +89,7 @@ try {
         </svg>
       </div>
       <div>
-        <b><?= count($listTeams) ?></b>
+        <b><?= count($listTim) ?></b>
         <span>tim mencari anggota</span>
       </div>
     </div>
@@ -120,37 +123,37 @@ try {
   </div>
 
   <div class="grid">
-    <?php if (count($listTeams) > 0): ?>
-      <?php foreach ($listTeams as $team):
-        $skills_req = explode(',', $team['skills_dibutuhkan'] ?? '');
+    <?php if (count($listTim) > 0): ?>
+      <?php foreach ($listTim as $tim):
+        $skills_req = explode(',', $tim['skills_dibutuhkan'] ?? '');
       ?>
         <!-- Card -->
         <article class="card">
           <div class="poster" style="--a:#1f2d6b; --b:#44639a;">
             <span class="status">Menerima anggota</span>
-            <?php if (!empty($team['gambar'])): ?>
-              <img src="../<?= htmlspecialchars($team['gambar']) ?>" alt="Poster" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
+            <?php if (!empty($tim['gambar'])): ?>
+              <img src="../<?= htmlspecialchars($tim['gambar']) ?>" alt="Poster" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
             <?php else: ?>
-              <span><?= strtoupper(substr($team['nama_lomba'], 0, 2)) ?></span>
+              <span><?= strtoupper(substr($tim['nama_lomba'], 0, 2)) ?></span>
             <?php endif; ?>
           </div>
 
           <div class="body">
-            <h3><?= htmlspecialchars($team['nama_lomba']) ?></h3>
+            <h3><?= htmlspecialchars($tim['nama_lomba']) ?></h3>
             <div class="team-meta-info" style="display: flex; align-items: center; gap: 6px; margin: 4px 0 8px; font-size: 15px; font-weight: 700;">
             <span style="font-size: 17px;">👥</span>
-            <span>Nama Tim: <b><?= htmlspecialchars($team['nama_tim']) ?></b></span>
+            <span>Nama Tim: <b><?= htmlspecialchars($tim['nama_tim']) ?></b></span>
             </div>
             <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted);">
-              <?php if (!empty($team['foto_profil'])): ?>
-                <img src="../assets/uploads/profile/<?= htmlspecialchars($team['foto_profil']) ?>" alt="Foto Profil" style="width: 22px; height: 22px; border-radius: 50%; object-fit: cover;">
+              <?php if (!empty($tim['foto_profil'])): ?>
+                <img src="../assets/uploads/profile/<?= htmlspecialchars($tim['foto_profil']) ?>" alt="Foto Profil" style="width: 22px; height: 22px; border-radius: 50%; object-fit: cover;">
               <?php else: ?>
                 <!-- Fallback inisial nama jika ketua belum upload foto profil -->
                 <div style="width: 22px; height: 22px; border-radius: 50%; background: var(--yellow); color: var(--navy-900); display: grid; place-items: center; font-size: 10px; font-weight: 700;">
-                  <?= strtoupper(substr($team['nama_ketua'], 0, 2)) ?>
+                  <?= strtoupper(substr($tim['nama_ketua'], 0, 2)) ?>
                 </div>
               <?php endif; ?>
-              <span>Ketua: <b><?= htmlspecialchars($team['nama_ketua']) ?></b></span>
+              <span>Ketua: <b><?= htmlspecialchars($tim['nama_ketua']) ?></b></span>
             </div>
             <div class="tags">
               <?php foreach ($skills_req as $s): ?>
@@ -160,8 +163,7 @@ try {
               <?php endforeach; ?>
             </div>
             <div class="card-actions">
-              <a class="btn btn-ghost" href="../tim/apply-tim.php?id=<?= $team['id'] ?>" style="width: 100%;">Detail</a>
-              <a class="btn btn-orange" href="../tim/apply-tim.php?id=<?= $team['id'] ?>" style="width: 100%;">Gabung</a>
+              <a class="btn btn-ghost" href="../tim/apply-tim.php?id=<?= $tim['id'] ?>" style="width: 100%;">Detail</a>
             </div>
           </div>
         </article>

@@ -2,6 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+require_once '../includes/koneksi.php';
 
 // Mendapatkan URL saat ini untuk menentukan menu yang sedang aktif
 $current_url = $_SERVER['REQUEST_URI'];

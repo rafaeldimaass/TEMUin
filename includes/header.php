@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
 
-require_once '../includes/koneksi.php';
+require_once __DIR__ . '/koneksi.php';
 
 $sudahLogin = isset($_SESSION['user_id']);
 
@@ -94,16 +94,16 @@ if ($fotoProfil !== '') {
 
         <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'dosen'): ?>
           <!-- MENU KHUSUS DOSEN -->
-          <a href="<?php echo $base; ?>user-dosen/dashboard.php" <?php echo strpos($current_url, 'dashboard.php') !== false ? 'aria-current="page"' : ''; ?>>Beranda</a>
+          <a href="<?php echo $base; ?>dashboard.php" <?php echo strpos($current_url, 'dashboard.php') !== false ? 'aria-current="page"' : ''; ?>>Beranda</a>
           <a href="<?php echo $base; ?>tim/list-tim.php" <?php echo strpos($current_url, 'list-tim.php') !== false ? 'aria-current="page"' : ''; ?>>Tim</a>
           <a href="<?php echo $base; ?>lomba/info-lomba.php" <?php echo strpos($current_url, 'lomba.php') !== false ? 'aria-current="page"' : ''; ?>>Lomba</a>
           <a href="<?php echo $base; ?>user-dosen/list-bimbingan.php" <?php echo strpos($current_url, 'list-bimbingan.php') !== false ? 'aria-current="page"' : ''; ?>>Pengajuan Bimbingan</a>
 
         <?php else: ?>
-          <a href="<?php echo $base; ?>user-mhs/dashboard.php" <?php echo strpos($current_url, 'dashboard.php') !== false ? 'aria-current="page"' : ''; ?>>Beranda</a>
+          <a href="<?php echo $base; ?>dashboard.php" <?php echo strpos($current_url, 'dashboard.php') !== false ? 'aria-current="page"' : ''; ?>>Beranda</a>
           <a href="<?php echo $base; ?>tim/list-tim.php" <?php echo strpos($current_url, 'list-tim.php') !== false ? 'aria-current="page"' : ''; ?>>Tim</a>
           <a href="<?php echo $base; ?>lomba/info-lomba.php" <?php echo strpos($current_url, 'lomba.php') !== false ? 'aria-current="page"' : ''; ?>>Lomba</a>
-          <a href="<?php echo $base; ?>user-dosen/list-dosen.php" <?php echo strpos($current_url, 'dosen.php') !== false ? 'aria-current="page"' : ''; ?>>Dosen Pembimbing</a>
+          <a href="<?php echo $base; ?>user-mhs/list-dosen.php" <?php echo strpos($current_url, 'dosen.php') !== false ? 'aria-current="page"' : ''; ?>>Dosen Pembimbing</a>
           <a href="<?php echo $base; ?>informasi/riwayat-lamaran.php" <?php echo strpos($current_url, 'riwayat-lamaran.php') !== false ? 'aria-current="page"' : ''; ?>>Riwayat</a>
         <?php endif; ?>
       </nav>

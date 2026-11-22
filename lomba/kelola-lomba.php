@@ -36,6 +36,22 @@ try {
 <link rel="stylesheet" href="../assets/css/components.css">
 <link rel="stylesheet" href="../assets/css/pages/admin.css">
 
+<?php if (isset($_SESSION['berhasil'])): ?>
+  <div class="alert alert-success" style="padding: 14px 20px; background: #d1fae5; color: #065f46; border: 1px solid #10b981; border-radius: 8px; margin-bottom: 20px; font-weight: 500; display: flex; justify-content: space-between; align-items: center;">
+    <span><?= htmlspecialchars($_SESSION['berhasil']) ?></span>
+    <button type="button" onclick="this.parentElement.style.display='none';" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #065f46;">&times;</button>
+  </div>
+  <?php unset($_SESSION['berhasil']); ?>
+<?php endif; ?>
+
+<?php if (isset($_SESSION['error'])): ?>
+  <div class="alert alert-danger" style="padding: 14px 20px; background: #fee2e2; color: #991b1b; border: 1px solid #ef4444; border-radius: 8px; margin-bottom: 20px; font-weight: 500; display: flex; justify-content: space-between; align-items: center;">
+    <span><?= htmlspecialchars($_SESSION['error']) ?></span>
+    <button type="button" onclick="this.parentElement.style.display='none';" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #991b1b;">&times;</button>
+  </div>
+  <?php unset($_SESSION['error']); ?>
+<?php endif; ?>
+
 <div class="page-head">
     <div>
         <h1>Data Kompetisi</h1>
@@ -115,18 +131,19 @@ try {
                                     <?php endif; ?>
                                 </td>
                                 <td>
-<a href="<?= htmlspecialchars($data_lomba['link_detail'], ENT_QUOTES, 'UTF-8') ?>"
-       target="_blank"
-       rel="noopener noreferrer">
-        <?= htmlspecialchars($data_lomba['link_detail'], ENT_QUOTES, 'UTF-8') ?>
-    </a>                                </td>
+                                    <a href="<?= htmlspecialchars($data_lomba['link_detail'], ENT_QUOTES, 'UTF-8') ?>"
+                                        target="_blank"
+                                        rel="noopener noreferrer">
+                                        <?= htmlspecialchars($data_lomba['link_detail'], ENT_QUOTES, 'UTF-8') ?>
+                                    </a>
+                                </td>
                                 <td><?= htmlspecialchars($data_lomba['tanggal_penutupan']) ?></td>
                                 <td>
                                     <div class="action-buttons">
                                         <a href="edit-lomba.php?id=<?= urlencode($data_lomba['id']) ?>" class="btn-action btn-edit">
                                             <i class="fas fa-edit"></i> Edit
                                         </a>
-                                        <a href="hapus-lomba.php?id=<?= urlencode($data_lomba['id']) ?>" class="btn-action btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus data dosen ini?');">
+                                        <a href="hapus-lomba.php?id=<?= urlencode($data_lomba['id']) ?>" class="btn-action btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus data lomba ini?');">
                                             <i class="fas fa-trash"></i> Hapus
                                         </a>
                                     </div>

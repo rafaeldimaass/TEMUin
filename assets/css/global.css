@@ -55,8 +55,10 @@ body {
   min-height: 100vh;
 }
 .main-content,
-.main {
-  flex: 1; /* Membuat area konten memanjang dan mendorong footer ke bawah */
+.main,
+.wrap
+ {
+  flex: 1; 
 }
 
 a {

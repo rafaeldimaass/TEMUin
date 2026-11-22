@@ -124,7 +124,7 @@ $jumlahMenunggu = (int) $stmtMenunggu->fetchColumn();
     </div>
 
     <div class="table-responsive">
-      <table class="applicant-table">
+      <table class="table-admin">
         <thead>
           <tr>
             <th>Ketua Tim</th>
@@ -158,9 +158,13 @@ $jumlahMenunggu = (int) $stmtMenunggu->fetchColumn();
               <td><span class="badge badge-blue"><?= htmlspecialchars($tim['kategori'] ?? '', ENT_QUOTES, 'UTF-8') ?></span></td>
               <td><span class="badge badge-green"><?= htmlspecialchars($tim['status_tim'] ?? '', ENT_QUOTES, 'UTF-8') ?></span></td>
               <td>
-                <div class="action-cell">
-                  <a class="btn btn-navy" href="moderasi.php">Tinjau</a>
-                  <a class="btn-reject" href="moderasi.php">Hapus</a>
+                <div class="action-buttons">
+                  <a href="#" class="btn-action btn-navy">
+                    <i class="fas fa-eye"></i> Lihat
+                  </a>
+                  <a href="#" class="btn-action btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus data tim ini?');">
+                    <i class="fas fa-trash"></i> Hapus
+                  </a>
                 </div>
               </td>
             </tr>

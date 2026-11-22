@@ -12,7 +12,7 @@ require_once '../includes/sidebar.php';
 
 // Search dan filtering
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
-$prodi_filter = isset($_GET['jurusan']) ? trim($_GET['jurusan']) : '';
+$jurusan_filter = isset($_GET['jurusan']) ? trim($_GET['jurusan']) : '';
 
 $query = "SELECT pd.*, u.nama, u.email 
           FROM profil_dosen pd
@@ -28,9 +28,9 @@ if (!empty($search)) {
 }
 
 // Filter prodi
-if (!empty($prodi_filter)) {
+if (!empty($jurusan_filter)) {
     $query .= " AND pd.jurusan = ?";
-    $params[] = $prodi_filter;
+    $params[] = $jurusan_filter;
 }
 
 $query .= "ORDER BY pd.id DESC";
@@ -153,7 +153,7 @@ try {
 </section>
 <!-- Paginasi -->
 <div class="pagination-container">
-    <span>Menampilkan 1 hingga 2 dari total 15 dosen</span>
+    <span>Menampilkan <?= count($list_dosen) ?> data dosen</span>
     <div class="pagination-nav">
         <button class="page-btn">Sebelumnya</button>
         <button class="page-btn active">1</button>
