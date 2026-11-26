@@ -45,18 +45,22 @@ body {
     flex: 1; /* Mengisi sisa ruang kosong di antara logo dan tombol keluar */
 }
 .nav-menu li, .logout {
-    padding: 15px 25px;
-    cursor: pointer;
+    padding: 0;
     font-size: 14px;
     display: flex;
     align-items: center;
-    gap: 15px; /* Jarak antara ikon FontAwesome dan teks */
+}
+
+/* Padding ada di <a> agar seluruh area menu bisa diklik */
+.nav-menu li > a, .logout > a {
+    padding: 15px 25px;
+    box-sizing: border-box;
+    cursor: pointer;
 }
 
 /* Efek Menu Aktif */
 .nav-menu li.active {
     background-color: #F47B20;
-    padding: 15px 25px;
     margin: 0 auto;
     font-weight: 600;
     color: var(--navy-900);
@@ -90,6 +94,120 @@ body {
     margin-right: -40px; /* Menarik footer menembus padding kanan */
     margin-bottom: -32px; /* Menarik footer menembus padding bawah */
     width: auto; 
+}
+
+
+/* ================= SIDEBAR COLLAPSIBLE ================= */
+.sidebar {
+    position: relative;
+    width: 260px;
+    min-width: 260px;
+    padding-top: 76px;
+    transition: width .25s ease, min-width .25s ease, transform .25s ease;
+    z-index: 1001;
+}
+
+.sidebar-toggle {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 1100;
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 10px;
+    background: var(--navy-700);
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background .2s ease, left .25s ease;
+}
+.sidebar-toggle:hover { background: var(--orange); color: var(--navy-900); }
+.sidebar .logo { padding-top: 4px; }
+.sidebar .nav-menu { padding: 0; margin: 0; }
+.sidebar .nav-menu a,
+.sidebar .logout a { white-space: nowrap; overflow: hidden; }
+
+body.sidebar-collapsed .sidebar {
+    width: 82px;
+    min-width: 82px;
+}
+body.sidebar-collapsed .sidebar .logo {
+    visibility: hidden;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+}
+body.sidebar-collapsed .sidebar .nav-menu li,
+body.sidebar-collapsed .sidebar .logout {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+body.sidebar-collapsed .sidebar .nav-menu a,
+body.sidebar-collapsed .sidebar .logout a {
+    justify-content: center !important;
+    gap: 0 !important;
+    font-size: 0;
+    padding: 15px 0;
+}
+body.sidebar-collapsed .sidebar .nav-menu a i,
+body.sidebar-collapsed .sidebar .logout a i {
+    font-size: 18px;
+}
+body.sidebar-collapsed .sidebar .nav-menu li.active { width: 72%; }
+body.sidebar-collapsed .main-content { min-width: 0; }
+
+.sidebar-backdrop { display: none; }
+
+@media (max-width: 768px) {
+    body { overflow: hidden; }
+    .sidebar {
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: 260px;
+        min-width: 260px;
+        transform: translateX(0);
+        box-shadow: 8px 0 28px rgba(15, 23, 42, .18);
+    }
+    body.sidebar-collapsed .sidebar {
+        width: 260px;
+        min-width: 260px;
+        transform: translateX(-105%);
+    }
+    body.sidebar-collapsed .sidebar .logo {
+        visibility: visible;
+        height: auto;
+        padding: 0 25px 30px;
+    }
+    body.sidebar-collapsed .sidebar .nav-menu li,
+    body.sidebar-collapsed .sidebar .logout {
+        justify-content: flex-start;
+        padding: 0;
+    }
+    body.sidebar-collapsed .sidebar .nav-menu a,
+    body.sidebar-collapsed .sidebar .logout a {
+        justify-content: flex-start !important;
+        gap: 15px !important;
+        font-size: 14px;
+        padding: 15px 25px;
+    }
+    body.sidebar-collapsed .sidebar .nav-menu li.active { width: 95%; }
+    .sidebar-toggle { background: var(--navy-900); }
+    body:not(.sidebar-collapsed) .sidebar-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background: rgba(15, 23, 42, .45);
+    }
+    .main-content {
+        width: 100%;
+        min-width: 0;
+        padding: 76px 20px 24px;
+    }
 }
 
 .table-card{
@@ -198,4 +316,89 @@ body {
     background: var(--navy-900);
     color: white;
     border-color: var(--navy-900);
+}
+/* ===== Tombol Detail ===== */
+.btn-detail {
+    background: #e0e7ff;
+    color: var(--navy-900);
+}
+.btn-detail:hover {
+    background: #c7d2fe;
+}
+
+/* ===== Detail Mahasiswa ===== */
+.detail-mhs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+.detail-mhs-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 24px;
+}
+.detail-mhs-card h3 {
+    margin: 0 0 16px;
+    font-size: 16px;
+    color: var(--navy-900);
+}
+.detail-mhs-profile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.detail-mhs-avatar {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+.detail-mhs-avatar-initial {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 28px;
+    font-weight: 700;
+}
+.detail-mhs-identity { flex: 1; min-width: 180px; }
+.detail-mhs-identity h2 { margin: 0 0 4px; font-size: 20px; color: var(--navy-900); }
+.detail-mhs-identity p { margin: 0; color: var(--muted); }
+.detail-mhs-actions { display: flex; gap: 8px; }
+.detail-mhs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 24px;
+    margin: 0;
+}
+.detail-mhs-grid dt {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+.detail-mhs-grid dd {
+    margin: 0;
+    color: var(--navy-900);
+    word-break: break-word;
+}
+.detail-mhs-grid a { color: #253C6D; text-decoration: underline; }
+.detail-mhs-full { grid-column: 1 / -1; }
+.detail-mhs-skills { display: flex; flex-wrap: wrap; gap: 8px; }
+.detail-mhs-skill {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+}
+.detail-mhs-about { margin: 0; line-height: 1.7; color: #334155; }
+.detail-mhs-empty { margin: 0; color: var(--muted); font-style: italic; }
+
+@media (max-width: 640px) {
+    .detail-mhs-grid { grid-template-columns: 1fr; }
 }

@@ -33,7 +33,7 @@ if (!empty($jurusan_filter)) {
     $params[] = $jurusan_filter;
 }
 
-$query .= "ORDER BY pd.id DESC";
+$query .= " ORDER BY pd.id DESC";
 
 try {
     $stmt = $pdo->prepare($query);

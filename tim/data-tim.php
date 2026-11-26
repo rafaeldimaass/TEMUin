@@ -29,6 +29,7 @@ $timTerbentuk = (int) $pdo->query('SELECT COUNT(*) FROM tim_lomba')->fetchColumn
 <link rel="stylesheet" href="../assets/css/pages/dashboard.css">
 <link rel="stylesheet" href="../assets/css/components.css">
 <link rel="stylesheet" href="../assets/css/global.css">
+<link rel="stylesheet" href="../assets/css/pages/admin.css">
 
 <div class="page-head">
     <div>
@@ -112,7 +113,7 @@ $timTerbentuk = (int) $pdo->query('SELECT COUNT(*) FROM tim_lomba')->fetchColumn
     </table>
   </div>
 </div>
-<section>
+          </section>
 <?php
 require_once '../includes/footer.php';
 ?>

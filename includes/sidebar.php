@@ -2,7 +2,6 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once '../includes/koneksi.php';
 
 // Mendapatkan URL saat ini untuk menentukan menu yang sedang aktif
 $current_url = $_SERVER['REQUEST_URI'];
@@ -31,39 +30,45 @@ $current_url = $_SERVER['REQUEST_URI'];
 </head>
 <body>
 
-<aside class="sidebar">
+<button class="sidebar-toggle" id="sidebarToggle" type="button"
+        aria-label="Tutup sidebar" aria-controls="appSidebar" aria-expanded="true"
+        title="Tutup sidebar">
+    <i class="fas fa-bars" aria-hidden="true"></i>
+</button>
+
+<aside class="sidebar" id="appSidebar">
     <div class="logo">
         <img src="../assets/img/logo-putih.png" alt="Logo TEMUin Admin">
     </div>
     <ul class="nav-menu">
         <!-- Deteksi URL: jika terdapat kata 'dashboard.php', beri class 'active' -->
         <li class="<?= strpos($current_url, 'dashboard.php') !== false ? 'active' : '' ?>">
-            <a href="../admin/dashboard.php" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 15px; width: 100%;">
+            <a href="../admin/dashboard.php" title="Dashboard" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 15px; width: 100%;">
                 <i class="fas fa-home"></i> Dashboard
             </a>
         </li>
         <li class="<?= strpos($current_url, 'data-mahasiswa.php') !== false ? 'active' : '' ?>">
-            <a href="../user-mhs/data-mahasiswa.php" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 15px; width: 100%;">
+            <a href="../admin/data-mahasiswa.php" title="Data Mahasiswa" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 15px; width: 100%;">
                 <i class="fas fa-users"></i> Data Mahasiswa
             </a>
         </li>
         <li class="<?= strpos($current_url, 'data-dosen.php') !== false ? 'active' : '' ?>">
-            <a href="../user-dosen/data-dosen.php" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 15px; width: 100%;">
+            <a href="../admin/data-dosen.php" title="Data Dosen" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 15px; width: 100%;">
                 <i class="fas fa-chalkboard-teacher"></i> Data Dosen
             </a>
         </li>
         <li class="<?= strpos($current_url, 'kelola-lomba.php') !== false ? 'active' : '' ?>">
-            <a href="../lomba/kelola-lomba.php" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 15px; width: 100%;">
+            <a href="../lomba/kelola-lomba.php" title="Kelola Info Kompetisi" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 15px; width: 100%;">
                 <i class="fas fa-trophy"></i> Kelola Info Kompetisi
             </a>
         </li>
         <li class="<?= strpos($current_url, 'data-tim.php') !== false ? 'active' : '' ?>">
-            <a href="../tim/data-tim.php" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 15px; width: 100%;">
+            <a href="../tim/data-tim.php" title="Data Tim" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 15px; width: 100%;">
                 <i class="fas fa-user-friends"></i> Data Tim
             </a>
         </li>
         <li class="<?= strpos($current_url, 'kelola-user.php') !== false ? 'active' : '' ?>">
-            <a href="../admin/kelola-user.php" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 15px; width: 100%;">
+            <a href="../admin/kelola-user.php" title="Data Pengguna" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 15px; width: 100%;">
                 <i class="fas fa-user-friends"></i> Data Pengguna
             </a>
         </li>
@@ -71,10 +76,11 @@ $current_url = $_SERVER['REQUEST_URI'];
     
     <div class="logout">
         <!-- Pastikan mengarah ke proses logout yang benar -->
-        <a href="../auth/logout.php" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 15px; width: 100%;">
+        <a href="../auth/logout.php" title="Keluar" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 15px; width: 100%;">
             <i class="fas fa-sign-out-alt"></i> Keluar
         </a>
     </div>
 </aside>
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
 <main class="main-content">

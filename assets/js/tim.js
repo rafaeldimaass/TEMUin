@@ -40,7 +40,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const chipList = document.getElementById('chipList');
         const chipContainer = document.getElementById('chip-container');
 
-        let skillsArray = [];
+       let skillsArray = (skillsHidden && skillsHidden.value)
+        ? skillsHidden.value.split(',').map(s => s.trim()).filter(s => s !== '')
+        : [];
 
         function updateSkillsInput() {
         if (!skillsHidden) return;
@@ -55,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
         if (skillsInput && chipList) {
-        updateSkillsInput();
+        renderChips();
         skillsInput.addEventListener('keydown', function (e) {
             // Jika user menekan tombol Enter atau Koma (,)
             if (e.key === 'Enter' || e.key === ',') {
